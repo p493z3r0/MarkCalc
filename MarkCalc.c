@@ -8,8 +8,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-char result;
-
 int main(int argc, char* argv[]){
     if (argc < 3) {
         printf("Usage: %s <Points Reached> <Max Point>\n", argv[0]);
@@ -49,7 +47,6 @@ int MarkGenerator(int argc, char * argv[])
         temp = temp * 5;
         temp = temp +1;
     if (temp > 6){
-        result = NULL;
         
         printf("\x1b[31m Need superuser, please type in your password.\x1b[0m \n");
         system("sudo true");
@@ -61,33 +58,32 @@ int MarkGenerator(int argc, char * argv[])
             printf("Error opening file!\n");
             exit(1);
         }
-        /* print some text */
         fprintf(f, "Content Of Temp: %lf\n", temp);
         fprintf(f, "Content Of MaxPoint: %lf\n", MaxPoint);
         fprintf(f, "Content Of PointsReached: %lf\n", PointsReached);
         fprintf(f, "Content Of argv[1]: %s\n", argv[1]);
         fprintf(f, "Content Of argv[2]: %s\n", argv[2]);
-        fprintf(f, "Content Of result: %s\n", result);
+       
        
         fclose(f);
         OnError("\x1b[31m Somthing went wrong. The output is greater than six. If You know about this bug, please send an email to dominic.jaermann@icloud.com and attach the Log File (stored in /Library/Logs/calc.log)\x1b[0m ", -3);
                 temp = 0;
     }
     if (temp != temp){
-        OnError("\x1b[31m NaN Detected \x1b[0m", -34);
+        printf("\n%lf\n", temp);
+        OnError("\x1b[31m NaN, or Bufferoverflow Detected \x1b[0m", -34);
+        
     }else{
         float val = temp;
         
-        
-        float rounded = roundf(val * 100) / 100;  /* Result: 37.78 */
-        
-        
-        
-        printf("\x1b[32m %.1f\n \x1b[0m", rounded);
+        float rounded_down = floorf(val * 100) / 100;
+        float nearest = roundf(val * 100) / 100;
+        float rounded_up = ceilf(val * 100) / 100;
+
+        printf("\x1b[32m %.1f\n \x1b[0m", nearest);
     cleanup();
     }
 }
 int cleanup(){
-    result = 0;
     exit(0);
 }
